@@ -2,10 +2,16 @@ import boto3
 import os
 import pandas as pd
 import io 
+import logging
+
+# Configuración de logging
+LOG_FORMAT = "%(asctime)s - %(levelname)s - %(message)s"
+logging.basicConfig(filename='c:/Users/Andrea bb/Downloads/Spotify/logs.txt', level=logging.INFO, format=LOG_FORMAT)
+logger = logging.getLogger()
 
 # Configurar las credenciales de AWS
-aws_access_key_id = '*******'
-aws_secret_access_key = ''*******''
+aws_access_key_id = '*********'
+aws_secret_access_key = '********'
 aws_region = 'us-east-1'  
 
 def extract_data(file_name):
@@ -15,10 +21,10 @@ def extract_data(file_name):
     try:
         # Leer el archivo CSV en un DataFrame de Pandas
         data = pd.read_csv(file_name)
-        print("Datos extraídos exitosamente.")
+        logging.info("Datos extraídos exitosamente.")
         return data
     except Exception as e:
-        print(f"Error al extraer datos del archivo CSV: {str(e)}")
+        logging.error(f"Error al extraer datos del archivo CSV: {str(e)}")
         return None
 
 def transform_data(data):
@@ -43,17 +49,17 @@ def transform_data(data):
             data['total_views'] = data['total_views'].astype(int)  # Convertir total_views a tipo entero
             data['total_videos'] = data['total_videos'].astype(int)  # Convertir total_videos a tipo entero
             data['subscriber_count'] = data['subscriber_count'].astype(int)  # Convertir subscriber_count a tipo entero
-            print("Datos transformados exitosamente.")
+            logging.info("Datos transformados exitosamente.")
 
             # Dividir el DataFrame en dos: uno para los datos del canal y otro para las estadísticas
             canal_data = data[['channel_id', 'channel_link', 'channel_name', 'subscriber_count', 'banner_link', 'description', 'keywords', 'avatar_link', 'country', 'join_date_formatted']]
             estadisticas_data = data[['channel_id', 'total_views', 'total_videos', 'mean_views_last_30_videos', 'median_views_last_30_videos', 'std_views_last_30_videos', 'videos_per_week']]
             return canal_data, estadisticas_data
         else:
-            print("Error: La clave primaria no es única o contiene valores nulos.")
+            logging.error("Error: La clave primaria no es única o contiene valores nulos.")
             return None, None
     except Exception as e:
-        print(f"Error al transformar los datos: {str(e)}")
+        logging.error(f"Error al transformar los datos: {str(e)}")
         return None, None
 
 def load_data_to_s3(data, file_name, bucket_name):
@@ -71,9 +77,9 @@ def load_data_to_s3(data, file_name, bucket_name):
         
         # Eliminar el archivo CSV temporal
         os.remove(temp_file)
-        print(f"Datos cargados exitosamente en S3 en el bucket {bucket_name}.")
+        logging.info(f"Datos cargados exitosamente en S3 en el bucket {bucket_name}.")
     except Exception as e:
-        print(f"Error al cargar los datos en S3: {str(e)}")
+        logging.error(f"Error al cargar los datos en S3: {str(e)}")
 
 def data_quality_check(data):
     """
@@ -81,22 +87,22 @@ def data_quality_check(data):
     """
     # Verificar si hay duplicados en la clave primaria
     if data['channel_id'].duplicated().any():
-        print("Advertencia: Se encontraron registros duplicados en la clave primaria 'channel_id'.")
+        logging.error("Advertencia: Se encontraron registros duplicados en la clave primaria 'channel_id'.")
 
     # Verificar si hay valores nulos en la clave primaria
     if data['channel_id'].isnull().any():
-        print("Advertencia: Se encontraron valores nulos en la clave primaria 'channel_id'.")
+        logging.error("Advertencia: Se encontraron valores nulos en la clave primaria 'channel_id'.")
     
-    print("Control de calidad de datos completado.")
+    logging.info("Control de calidad de datos completado.")
 
 def main():
     # Nombre del archivo CSV con los datos
     file_name = 'c:/Users/Andrea bb/Downloads/Spotify/youtube_channels_1M_clean.csv'
-    print(f"Archivo de entrada: {file_name}")
+    logging.info(f"Archivo de entrada: {file_name}")
     
     # Nombre del bucket de S3 donde se cargarán los datos
     bucket_name = 'nequiprueba'
-    print(f"Bucket de destino: {bucket_name}")
+    logging.info(f"Bucket de destino: {bucket_name}")
     
     # Extraer los datos del archivo CSV
     data = extract_data(file_name)
@@ -112,12 +118,12 @@ def main():
             load_data_to_s3(estadisticas_data, 'estadisticas_data.csv', bucket_name)
             
             # Verificar las columnas en S3
-            print("Verificación de columnas en canal_data.csv:")
+            logging.info("Verificación de columnas en canal_data.csv:")
             verify_columns_in_s3('canal_data.csv', bucket_name, canal_data.columns)
-            print("Verificación de columnas en estadisticas_data.csv:")
+            logging.info("Verificación de columnas en estadisticas_data.csv:")
             verify_columns_in_s3('estadisticas_data.csv', bucket_name, estadisticas_data.columns)
             
-    print("Proceso de carga de datos completado.")
+    logging.info("Proceso de carga de datos completado.")
 
 def verify_columns_in_s3(file_name, bucket_name, expected_columns):
     """
@@ -133,14 +139,12 @@ def verify_columns_in_s3(file_name, bucket_name, expected_columns):
         
         # Verificar si las columnas esperadas están presentes
         if all(col in data.columns for col in expected_columns):
-            print(f"Columnas en {file_name} encontradas:")
-            print(expected_columns)
+            logging.info(f"Columnas en {file_name} encontradas")
         else:
-            print(f"Error: No se encontraron todas las columnas requeridas en {file_name}")
-            print(data.columns)
+            logging.error(f"Error: No se encontraron todas las columnas requeridas en {file_name}")
             
     except Exception as e:
-        print(f"Error al verificar columnas en S3: {str(e)}")
+        logging.error(f"Error al verificar columnas en S3: {str(e)}")
 
 if __name__ == "__main__":
     main()
