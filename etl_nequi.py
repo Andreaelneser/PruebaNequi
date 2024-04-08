@@ -4,8 +4,8 @@ import pandas as pd
 import io 
 
 # Configurar las credenciales de AWS
-aws_access_key_id = '**********'
-aws_secret_access_key = '**********'
+aws_access_key_id = '*******'
+aws_secret_access_key = ''*******''
 aws_region = 'us-east-1'  
 
 def extract_data(file_name):
@@ -38,10 +38,11 @@ def transform_data(data):
             data['join_date_formatted'] = pd.to_datetime(data['join_date_formatted']) # Convertir join_date_formatted a tipo fecha
             data['channel_id'] = data['channel_id'].astype(str)   # Convertir channel_id a tipo string
             data['channel_link'] = data['channel_link'].astype(str)  # Convertir channel_link a tipo string
+            data['channel_name'] = data['channel_name'].astype(str)  # Convertir channel_name a tipo string
+            data['country'] = data['country'].astype(str)  # Convertir country a tipo string
             data['total_views'] = data['total_views'].astype(int)  # Convertir total_views a tipo entero
             data['total_videos'] = data['total_videos'].astype(int)  # Convertir total_videos a tipo entero
             data['subscriber_count'] = data['subscriber_count'].astype(int)  # Convertir subscriber_count a tipo entero
-
             print("Datos transformados exitosamente.")
 
             # Dividir el DataFrame en dos: uno para los datos del canal y otro para las estadísticas
