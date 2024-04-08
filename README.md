@@ -1,10 +1,15 @@
 # Prueba Nequi
 En el presente repositorio se encuentran los siguientes archivos:
   **AElneser_PruebaTécnicaNequi.pdf**
+  
   Este archivo tiene todos los puntos de la prueba con sus respuestas y explicaciones.
+  
   **Arquitectura.jpeg**
+  
   En esta imagen se puede observar la arquitectura propuesta. Esta imagen también se encuentra en AElneser_PruebaTécnicaNequi.pdf.
+  
   **Data_diccionario.xlsx**
+  
   Este archivo contiene el diccionario de datos del proyecto.
   **ER (2).jpeg**
   En esta imagen se encuentra el modelo propuesto. Esta imagen también se encuentra en AElneser_PruebaTécnicaNequi.pdf.
