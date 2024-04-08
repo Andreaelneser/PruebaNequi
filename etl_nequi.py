@@ -40,6 +40,8 @@ def transform_data(data):
             data['channel_link'] = data['channel_link'].astype(str)  # Convertir channel_link a tipo string
             data['total_views'] = data['total_views'].astype(int)  # Convertir total_views a tipo entero
             data['total_videos'] = data['total_videos'].astype(int)  # Convertir total_videos a tipo entero
+            data['subscriber_count'] = data['subscriber_count'].astype(int)  # Convertir subscriber_count a tipo entero
+
             print("Datos transformados exitosamente.")
 
             # Dividir el DataFrame en dos: uno para los datos del canal y otro para las estadísticas
