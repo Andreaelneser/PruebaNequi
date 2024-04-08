@@ -4,8 +4,8 @@ import pandas as pd
 import io 
 
 # Configurar las credenciales de AWS
-aws_access_key_id = 'AKIA2UC3CAD7P3YEO3YE'
-aws_secret_access_key = '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'
+aws_access_key_id = '**********'
+aws_secret_access_key = '**********'
 aws_region = 'us-east-1'  
 
 def extract_data(file_name):
