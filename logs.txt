@@ -1,0 +1,12 @@
+2024-04-08 16:07:36,584 - INFO - Archivo de entrada: c:/Users/Andrea bb/Downloads/Spotify/youtube_channels_1M_clean.csv
+2024-04-08 16:07:36,584 - INFO - Bucket de destino: nequiprueba
+2024-04-08 16:08:14,254 - INFO - Datos extraídos exitosamente.
+2024-04-08 16:08:14,566 - INFO - Control de calidad de datos completado.
+2024-04-08 16:08:16,772 - INFO - Datos transformados exitosamente.
+2024-04-08 16:11:22,540 - INFO - Datos cargados exitosamente en S3 en el bucket nequiprueba.
+2024-04-08 16:11:43,895 - INFO - Datos cargados exitosamente en S3 en el bucket nequiprueba.
+2024-04-08 16:11:43,895 - INFO - Verificación de columnas en canal_data.csv:
+2024-04-08 16:13:00,184 - INFO - Columnas en canal_data.csv encontradas
+2024-04-08 16:13:01,404 - INFO - Verificación de columnas en estadisticas_data.csv:
+2024-04-08 16:13:22,848 - INFO - Columnas en estadisticas_data.csv encontradas
+2024-04-08 16:13:22,874 - INFO - Proceso de carga de datos completado.
